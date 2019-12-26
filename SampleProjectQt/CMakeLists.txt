@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
-project(sample_project_cpp)
+project(sample_project_qt)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
@@ -42,7 +42,7 @@ set(QRESOURCES
 set(CMAKE_AUTOUIC OFF)
 set(CMAKE_AUTORCC OFF)
 
-file(GLOB_RECURSE UIS sources/*.ui)
+file(GLOB_RECURSE UIS Sources/*.ui)
 
 qt5_wrap_ui(UIS_MOC ${UIS})
 qt5_add_resources(QRC_MOC ${QRESOURCES})
