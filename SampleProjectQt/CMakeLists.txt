@@ -25,6 +25,16 @@ message(STATUS "Platfom: ${PLATFORM}")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/${PLATFORM}/${CMAKE_BUILD_TYPE})
 message(STATUS "Output directory: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
 
+# find windeploy qt
+if(WIN32)
+	find_program(WIN_DEPLOY_QT windeployqt)
+	if(NOT WIN_DEPLOY_QT)
+	    message(FATAL_ERROR "Can not find path to windeployqt")
+	else()
+	    message(STATUS "windeployqt path: ${WIN_DEPLOY_QT}")
+	endif()
+endif()
+
 # def
 add_definitions(
   -D_SCL_SECURE_NO_WARNINGS     # disable warning on "calling potentially unsafe methods in the Standard C++ Library"
@@ -86,3 +96,12 @@ set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT $
 
 # verbose output
 #set(CMAKE_VERBOSE_MAKEFILE ON)
+
+# post build step for Win
+if(WIN32)
+	add_custom_command(
+		TARGET ${PROJECT_NAME} POST_BUILD
+		COMMAND ${WIN_DEPLOY_QT} $<TARGET_FILE:${PROJECT_NAME}>
+		COMMENT "Deploying Qt..."
+	)
+endif()
