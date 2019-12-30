@@ -50,11 +50,39 @@ qt5_add_resources(QRC_MOC ${QRESOURCES})
 set_property(SOURCE ${UIS_MOC} ${QRC_MOC} PROPERTY SKIP_AUTOMOC ON) # hides warning about generated files
 
 # application
-file(GLOB_RECURSE HEADERS Sources/*.h)
-file(GLOB_RECURSE SOURCES Sources/*.cpp Sources/*.c)
-add_executable(${PROJECT_NAME} ${SOURCES} ${RESOURCES} ${HEADERS} ${UIS_MOC} ${QRC_MOC})
+set(SOURCES 
+	Sources/Controllers/ControllerOne.cpp
+	Sources/Controllers/ControllerOne.h
+	Sources/Controllers/ControllerTwo.cpp
+	Sources/Controllers/ControllerTwo.h
+
+	Sources/Models/ModelOne.cpp
+	Sources/Models/ModelOne.h
+	Sources/Models/ModelTwo.cpp
+	Sources/Models/ModelTwo.h
+
+	Sources/Views/MainWindow.cpp
+	Sources/Views/MainWindow.h
+	Sources/Views/ViewOne.cpp
+	Sources/Views/ViewOne.h
+	Sources/Views/ViewTwo.cpp
+	Sources/Views/ViewTwo.h
+	
+	Sources/main.cpp
+)
+
+# create source groups
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SOURCES})
+source_group(Resources FILES ${UIS} ${QRESOURCES}) 
+
+add_executable(${PROJECT_NAME} ${SOURCES} ${RESOURCES} ${UIS_MOC} ${QRC_MOC})
+
+include_directories (Sources)
 
 qt5_use_modules(${PROJECT_NAME} Core Widgets)
+
+# set project as startup project in VS
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
 # verbose output
 #set(CMAKE_VERBOSE_MAKEFILE ON)
